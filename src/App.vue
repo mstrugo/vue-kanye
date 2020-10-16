@@ -39,6 +39,15 @@ export default {
       fetch(API_ENDPOINT)
         .then(response => response.json())
         .then(res => {
+          const exists = this.quotes.filter(q => q.quote === res.quote);
+          if (exists.length > 0) {
+            this.error = 'Already exists. Making another request...';
+            setTimeout(() => {
+              this.getQuote();
+            }, 3000);
+            return;
+          }
+
           this.quotes.push({
             quote: res.quote,
             id: Date.now(),
