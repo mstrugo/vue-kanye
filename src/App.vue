@@ -1,28 +1,57 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+  <div id="app" class="container">
+    <div class="row">
+      <div class="col">
+        <button type="button" @click="getQuote" class="btn btn-outline-primary">Request Quote</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="col-md-6" v-for="q in quotes" :key="q.id">
+          <QuoteComponent :quote="q.quote" />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import { API_ENDPOINT } from './constants';
+import QuoteComponent from './components/Quote';
 
 export default {
-  name: "App",
+  name: 'App',
   components: {
-    HelloWorld
-  }
+    QuoteComponent,
+  },
+  data() {
+    return {
+      quotes: [],
+      fetching: false,
+      error: '',
+    };
+  },
+  methods: {
+    getQuote() {
+      fetch(API_ENDPOINT)
+        .then(response => response.json())
+        .then(res => {
+          this.quotes.push({
+            quote: res.quote,
+            id: Date.now(),
+          });
+        })
+        .catch(err => (this.error = err));
+    },
+    removeQuote(quoteId) {
+      if (!quoteId) {
+        this.quotes = [];
+        return;
+      }
+
+      this.quotes = this.quotes.filter(q => q.id !== quoteId);
+      return;
+    },
+  },
 };
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
