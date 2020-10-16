@@ -1,9 +1,14 @@
 <template>
   <div id="app" class="container">
-    <div class="row">
+    <div class="row justify-content-end align-items-center my-4">
       <div class="col">
+        <div class="alert alert-warning d-inline" role="alert" v-if="error">
+          {{ error }}
+        </div>
+      </div>
+      <div class="col-md-3">
         <button type="button" @click="getQuote" class="btn btn-outline-primary">Request Quote</button>
-        <button type="button" @click="removeQuote()" class="btn btn-outline-danger">Delete all</button>
+        <button type="button" @click="removeQuote()" class="btn btn-outline-danger ml-3">Delete all</button>
       </div>
     </div>
     <div class="row">
@@ -38,6 +43,7 @@ export default {
             quote: res.quote,
             id: Date.now(),
           });
+          this.error = '';
         })
         .catch(err => (this.error = err));
     },
