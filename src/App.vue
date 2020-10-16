@@ -3,13 +3,12 @@
     <div class="row">
       <div class="col">
         <button type="button" @click="getQuote" class="btn btn-outline-primary">Request Quote</button>
+        <button type="button" @click="removeQuote()" class="btn btn-outline-danger">Delete all</button>
       </div>
     </div>
     <div class="row">
-      <div class="col">
-        <div class="col-md-6" v-for="q in quotes" :key="q.id">
-          <QuoteComponent :quote="q.quote" />
-        </div>
+      <div class="col-md-3" v-for="quote in quotes" :key="quote.id">
+        <QuoteComponent :data="quote" @removeHandler="removeQuote" />
       </div>
     </div>
   </div>
@@ -27,7 +26,6 @@ export default {
   data() {
     return {
       quotes: [],
-      fetching: false,
       error: '',
     };
   },

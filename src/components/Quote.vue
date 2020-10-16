@@ -1,8 +1,11 @@
 <template>
   <div class="card text-white bg-primary mb-3">
-    <div class="card-header">Quote</div>
+    <div class="card-header">
+      Quote
+      <button type="button" class="btn btn-outline-dark" @click="remove(data.id)">X</button>
+    </div>
     <div class="card-body">
-      <h5 class="card-title">{{ quote }}</h5>
+      <h5 class="card-title">{{ data.quote }}</h5>
     </div>
   </div>
 </template>
@@ -11,15 +14,15 @@
 export default {
   name: 'Quote',
   props: {
-    quote: String,
+    data: {
+      quote: String,
+      id: Number,
+    },
+  },
+  methods: {
+    remove(id) {
+      this.$emit('removeHandler', id);
+    },
   },
 };
 </script>
-
-<style scoped>
-/*
-.card--width {
-  max-width: 100;
-}
-*/
-</style>
